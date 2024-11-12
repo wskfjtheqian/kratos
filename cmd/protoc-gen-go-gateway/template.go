@@ -33,6 +33,7 @@ type methodDesc struct {
 	HasBody      bool
 	Body         string
 	ResponseBody string
+	Validate     bool
 }
 
 func (s *serviceDesc) execute() string {

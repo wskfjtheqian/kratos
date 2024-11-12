@@ -204,6 +204,7 @@ func buildMethodDesc(g *protogen.GeneratedFile, m *protogen.Method, method, path
 	if comment != "" {
 		comment = "// " + m.GoName + strings.TrimPrefix(strings.TrimSuffix(comment, "\n"), "//")
 	}
+
 	return &methodDesc{
 		Name:         m.GoName,
 		OriginalName: string(m.Desc.Name()),
