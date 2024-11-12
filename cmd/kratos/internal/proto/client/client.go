@@ -39,7 +39,7 @@ func run(_ *cobra.Command, args []string) {
 		err   error
 		proto = strings.TrimSpace(args[0])
 	)
-	if err = look("protoc-gen-go", "protoc-gen-go-grpc", "protoc-gen-go-http", "protoc-gen-go-errors", "protoc-gen-openapi"); err != nil {
+	if err = look("protoc-gen-go", "protoc-gen-go-grpc", "protoc-gen-go-http", "protoc-gen-go-errors", "protoc-gen-openapi", "protoc-gen-go-gateway"); err != nil {
 		// update the kratos plugins
 		cmd := exec.Command("kratos", "upgrade")
 		cmd.Stdout = os.Stdout
@@ -94,6 +94,7 @@ func generate(proto string, args []string) error {
 		"--go_out=paths=source_relative:.",
 		"--go-grpc_out=paths=source_relative:.",
 		"--go-http_out=paths=source_relative:.",
+		"--go-gateway_out=paths=source_relative:.",
 		"--go-errors_out=paths=source_relative:.",
 		"--openapi_out=paths=source_relative:.",
 	}
