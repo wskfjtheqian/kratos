@@ -7,7 +7,7 @@ import (
 	"text/template"
 )
 
-//go:embed gatewayTemplate.tpl
+//go:embed httpTemplate.tpl
 var httpTemplate string
 
 type serviceDesc struct {
@@ -33,7 +33,6 @@ type methodDesc struct {
 	HasBody      bool
 	Body         string
 	ResponseBody string
-	Validate     bool
 }
 
 func (s *serviceDesc) execute() string {
@@ -42,7 +41,7 @@ func (s *serviceDesc) execute() string {
 		s.MethodSets[m.Name] = m
 	}
 	buf := new(bytes.Buffer)
-	tmpl, err := template.New("gateway").Parse(strings.TrimSpace(httpTemplate))
+	tmpl, err := template.New("http").Parse(strings.TrimSpace(httpTemplate))
 	if err != nil {
 		panic(err)
 	}
