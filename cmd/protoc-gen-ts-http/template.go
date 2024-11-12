@@ -16,6 +16,7 @@ type serviceDesc struct {
 	Metadata    string // api/helloworld/helloworld.proto
 	Methods     []*methodDesc
 	MethodSets  map[string]*methodDesc
+	FileName    string
 }
 
 type methodDesc struct {

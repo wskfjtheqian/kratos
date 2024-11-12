@@ -50,6 +50,7 @@ func generateFileContent(gen *protogen.Plugin, file *protogen.File, g *protogen.
 	g.P("// is compatible with the kratos package it is being compiled against.")
 	g.P("import request from '@/utils/request'")
 	g.P("import axios from 'axios'")
+	g.P("import * as user from './" + file.GeneratedFilenamePrefix + ".pb';")
 	g.P()
 
 	for _, service := range file.Services {
@@ -67,6 +68,7 @@ func genService(_ *protogen.Plugin, file *protogen.File, g *protogen.GeneratedFi
 		ServiceType: service.GoName,
 		ServiceName: string(service.Desc.FullName()),
 		Metadata:    file.Desc.Path(),
+		FileName:    file.GeneratedFilenamePrefix,
 	}
 	for _, method := range service.Methods {
 		if method.Desc.IsStreamingClient() || method.Desc.IsStreamingServer() {
