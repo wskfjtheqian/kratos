@@ -2,11 +2,11 @@
 {{$svrName := .ServiceName}}
 
 type {{.ServiceType}}GatewayServer struct{
-	cc {{.ServiceType}}Client
+	Client {{.ServiceType}}Client
 }
 
 func New{{.ServiceType}}GatewayServer (client {{.ServiceType}}Client) {{.ServiceType}}HTTPServer {
-	return &{{.ServiceType}}GatewayServer{client}
+	return &{{.ServiceType}}GatewayServer{Client:client}
 }
 
 {{range .MethodSets}}
@@ -15,6 +15,6 @@ func (g *{{$svrType}}GatewayServer) {{.Name}}(ctx context.Context, in *{{.Reques
 	if err := in.Validate(); err != nil {
 		return nil, err
 	}
-	return g.cc.{{.Name}}(ctx, in)
+	return g.Client.{{.Name}}(ctx, in)
 }
 {{end}}

@@ -1,7 +1,7 @@
 {{$svrType := .MessageType}}
 {{$svrName := .MessageName}}
 
-export interface I{{.MessageType}} {
+export interface {{.MessageType}} {
 {{range .Fields}}
     {{- if ne .Comment ""}}
     {{.Comment}}

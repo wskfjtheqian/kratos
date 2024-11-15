@@ -2,21 +2,12 @@
 {{$svrName := .ServiceName}}
 {{$fileName := .FileName}}
 
-export interface I{{.ServiceType}}Client {
+export class {{.ServiceType}}Client {
 {{range .MethodSets}}
 	{{- if ne .Comment ""}}
 	{{.Comment}}
 	{{- end}}
-    {{.Name}}(req: {{$fileName}}.I{{.Name}}Request): Promise<axios.AxiosResponse<{{$fileName}}.I{{.Name}}Reply>>
-{{end}}
-}
-
-export class {{.ServiceType}}Client implements I{{.ServiceType}}Client {
-{{range .MethodSets}}
-	{{- if ne .Comment ""}}
-	{{.Comment}}
-	{{- end}}
-    {{.Name}}(req: {{$fileName}}.I{{.Name}}Request): Promise<axios.AxiosResponse<{{$fileName}}.I{{.Name}}Reply>> {
+    {{.Name}}(req: {{$fileName}}.{{.Name}}Request): Promise<axios.AxiosResponse<{{$fileName}}.{{.Name}}Reply>> {
         return request({
             url: "{{.Path}}",
             method: "{{.Method}}",

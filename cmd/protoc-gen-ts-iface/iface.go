@@ -141,7 +141,7 @@ func getKind(g *protogen.GeneratedFile, d protoreflect.FieldDescriptor) string {
 		if d.IsMap() {
 			text = "Record<" + getKind(g, d.MapKey()) + "," + getKind(g, d.MapValue()) + ">"
 		} else {
-			text = "I" + string(d.Message().Parent().Name()) + "_" + string(d.Message().Name())
+			text = string(d.Message().Parent().Name()) + "_" + string(d.Message().Name())
 		}
 	case protoreflect.GroupKind:
 		text = "string"
