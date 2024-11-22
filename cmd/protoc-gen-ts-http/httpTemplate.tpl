@@ -2,16 +2,23 @@
 {{$svrName := .ServiceName}}
 {{$fileName := .FileName}}
 
-export class {{.ServiceType}}Client {
+class {{.ServiceType}}Client {
 {{range .MethodSets}}
 	{{- if ne .Comment ""}}
 	{{.Comment}}
 	{{- end}}
-    {{.Name}}(req: {{$fileName}}.{{.Name}}Request): Promise<axios.AxiosResponse<{{$fileName}}.{{.Name}}Reply>> {
+    {{.LowerName}}(req: {{$fileName}}.{{.Name}}Request): Promise<axios.AxiosResponse<{{$fileName}}.{{.Name}}Reply>> {
         return request({
             url: "{{.Path}}",
             method: "{{.Method}}",
+            {{- if or (eq .Method "PUT") (eq .Method "POST")}}
+            data: req,
+            {{- else}}
+            params: req,
+            {{- end}}
         })
     }
 {{end}}
 }
+
+export const {{.LowerServiceType}}Client = new {{.ServiceType}}Client()

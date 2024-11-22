@@ -50,7 +50,7 @@ func generateFileContent(gen *protogen.Plugin, file *protogen.File, g *protogen.
 	g.P("// is compatible with the kratos package it is being compiled against.")
 	g.P("import request from '@/utils/request'")
 	g.P("import axios from 'axios'")
-	g.P("import * as user from './" + file.GeneratedFilenamePrefix + ".pb';")
+	g.P("import * as " + file.GeneratedFilenamePrefix + " from './" + file.GeneratedFilenamePrefix + ".pb';")
 	g.P()
 
 	for _, service := range file.Services {
@@ -65,10 +65,12 @@ func genService(_ *protogen.Plugin, file *protogen.File, g *protogen.GeneratedFi
 	}
 	// HTTP Server.
 	sd := &serviceDesc{
-		ServiceType: service.GoName,
-		ServiceName: string(service.Desc.FullName()),
-		Metadata:    file.Desc.Path(),
-		FileName:    file.GeneratedFilenamePrefix,
+		ServiceType:      service.GoName,
+		LowerServiceType: strings.ToLower(service.GoName[:1]) + service.GoName[1:],
+		ServiceName:      string(service.Desc.FullName()),
+		LowerServiceName: strings.ToLower(string(service.Desc.FullName())[:1]) + string(service.Desc.FullName())[1:],
+		Metadata:         file.Desc.Path(),
+		FileName:         file.GeneratedFilenamePrefix,
 	}
 	for _, method := range service.Methods {
 		if method.Desc.IsStreamingClient() || method.Desc.IsStreamingServer() {
@@ -206,6 +208,7 @@ func buildMethodDesc(g *protogen.GeneratedFile, m *protogen.Method, method, path
 	}
 	return &methodDesc{
 		Name:         m.GoName,
+		LowerName:    strings.ToLower(m.GoName[:1]) + m.GoName[1:],
 		OriginalName: string(m.Desc.Name()),
 		Num:          methodSets[m.GoName],
 		Request:      g.QualifiedGoIdent(m.Input.GoIdent),

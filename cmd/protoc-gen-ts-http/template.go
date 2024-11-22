@@ -11,17 +11,20 @@ import (
 var httpTemplate string
 
 type serviceDesc struct {
-	ServiceType string // Greeter
-	ServiceName string // helloworld.Greeter
-	Metadata    string // api/helloworld/helloworld.proto
-	Methods     []*methodDesc
-	MethodSets  map[string]*methodDesc
-	FileName    string
+	ServiceType      string // Greeter
+	LowerServiceType string // Greeter
+	ServiceName      string // helloworld.Greeter
+	LowerServiceName string // helloworld.Greeter
+	Metadata         string // api/helloworld/helloworld.proto
+	Methods          []*methodDesc
+	MethodSets       map[string]*methodDesc
+	FileName         string
 }
 
 type methodDesc struct {
 	// method
 	Name         string
+	LowerName    string
 	OriginalName string // The parsed original name
 	Num          int
 	Request      string
@@ -41,6 +44,7 @@ func (s *serviceDesc) execute() string {
 	for _, m := range s.Methods {
 		s.MethodSets[m.Name] = m
 	}
+
 	buf := new(bytes.Buffer)
 	tmpl, err := template.New("http").Parse(strings.TrimSpace(httpTemplate))
 	if err != nil {
