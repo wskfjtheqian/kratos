@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
 
 	"google.golang.org/protobuf/compiler/protogen"
 	"google.golang.org/protobuf/types/pluginpb"
@@ -15,6 +16,7 @@ var (
 )
 
 func main() {
+	log.SetFlags(log.Llongfile)
 	flag.Parse()
 	if *showVersion {
 		fmt.Printf("protoc-gen-ts-iface %v\n", release)
