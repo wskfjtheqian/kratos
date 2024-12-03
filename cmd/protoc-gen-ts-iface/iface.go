@@ -117,7 +117,8 @@ func getKind(gen *protogen.Plugin, file *protogen.File, g *protogen.GeneratedFil
 	case protoreflect.BoolKind:
 		text = "boolean"
 	case protoreflect.EnumKind:
-		text = string(d.Enum().Name())
+		//text = string(d.Enum().Name())
+		text = "string"
 	case protoreflect.Int32Kind:
 		text = "number"
 	case protoreflect.Sint32Kind:
