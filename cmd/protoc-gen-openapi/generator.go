@@ -829,7 +829,7 @@ func (g *OpenAPIv3Generator) addSchemasForMessagesToDocumentV3(d *v3.Document, m
 		var required []string
 		for _, field := range message.Fields {
 			// Get the field description from the comments.
-			description := g.filterCommentString(field.Comments.Leading)
+			description := g.filterCommentString(field.Comments.Leading) + g.filterCommentString(field.Comments.Trailing)
 			// Check the field annotations to see if this is a readonly or writeonly field.
 			inputOnly := false
 			outputOnly := false
