@@ -17,6 +17,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/google/gnostic-models/openapiv3"
 	"log"
 	"net/url"
 	"regexp"
@@ -88,6 +89,7 @@ func NewOpenAPIv3Generator(plugin *protogen.Plugin, conf Configuration, inputFil
 // Run runs the generator.
 func (g *OpenAPIv3Generator) Run(outputFile *protogen.GeneratedFile) error {
 	d := g.buildDocumentV3()
+	d.Components.SecuritySchemes = g.buildSecuritySchemes()
 	bytes, err := d.YAMLValue("Generated with protoc-gen-openapi\n" + infoURL)
 	if err != nil {
 		return fmt.Errorf("failed to marshal yaml: %s", err.Error())
@@ -95,6 +97,7 @@ func (g *OpenAPIv3Generator) Run(outputFile *protogen.GeneratedFile) error {
 	if _, err = outputFile.Write(bytes); err != nil {
 		return fmt.Errorf("failed to write yaml: %s", err.Error())
 	}
+
 	return nil
 }
 
@@ -911,5 +914,24 @@ func (g *OpenAPIv3Generator) addSchemasForMessagesToDocumentV3(d *v3.Document, m
 				},
 			},
 		})
+	}
+}
+
+func (g *OpenAPIv3Generator) buildSecuritySchemes() *openapi_v3.SecuritySchemesOrReferences {
+	return &openapi_v3.SecuritySchemesOrReferences{
+		AdditionalProperties: []*openapi_v3.NamedSecuritySchemeOrReference{
+			{
+				Name: "bearerAuth",
+				Value: &openapi_v3.SecuritySchemeOrReference{
+					Oneof: &openapi_v3.SecuritySchemeOrReference_SecurityScheme{
+						SecurityScheme: &openapi_v3.SecurityScheme{
+							Type:         "http",
+							Scheme:       "bearer",
+							BearerFormat: "JWT",
+						},
+					},
+				},
+			},
+		},
 	}
 }
