@@ -608,6 +608,7 @@ func (g *OpenAPIv3Generator) buildOperationV3(
 		OperationId: operationID,
 		Parameters:  parameters,
 		Responses:   responses,
+		Security:    g.buildSecurityRequirement(),
 	}
 
 	if defaultHost != "" {
@@ -929,6 +930,21 @@ func (g *OpenAPIv3Generator) buildSecuritySchemes() *openapi_v3.SecuritySchemesO
 							Scheme:       "bearer",
 							BearerFormat: "JWT",
 						},
+					},
+				},
+			},
+		},
+	}
+}
+
+func (g *OpenAPIv3Generator) buildSecurityRequirement() []*openapi_v3.SecurityRequirement {
+	return []*openapi_v3.SecurityRequirement{
+		{
+			AdditionalProperties: []*openapi_v3.NamedStringArray{
+				{
+					Name: "bearerAuth",
+					Value: &openapi_v3.StringArray{
+						Value: []string{"read"},
 					},
 				},
 			},
